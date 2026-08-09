@@ -7,7 +7,6 @@ import css from './NoteDetails.client.module.css';
 
 export default function NoteDetailsClient() {
   const params = useParams();
-  
   const id = params.id as string;
 
   const { data: note, isLoading, error } = useQuery({
