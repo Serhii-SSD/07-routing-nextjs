@@ -9,15 +9,15 @@ import SearchBox from '@/components/SearchBox/SearchBox';
 import Pagination from '@/components/Pagination/Pagination';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
-import css from './NotesFilter.client.module.css';
+import css from './Notes.client.module.css';
 
 const PER_PAGE = 12;
 
-interface NotesFilterClientProps {
+interface NotesClientProps {
   initialSlug: string;
 }
 
-export default function NotesFilterClient({ initialSlug }: NotesFilterClientProps) {
+export default function NotesClient({ initialSlug }: NotesClientProps) {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
