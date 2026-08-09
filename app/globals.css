@@ -8,11 +8,3 @@ body {
   margin: 0;
   background-color: #f8f9fa;
 }
-/* app/globals.css */
-* {
-  box-sizing: border-box;
-}
-
-main {
-  flex: 1;
-}

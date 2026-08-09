@@ -3,17 +3,21 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
-import { fetchNotes } from '../../lib/api';
-import NoteList from '../../components/NoteList/NoteList';
-import SearchBox from '../../components/SearchBox/SearchBox';
-import Pagination from '../../components/Pagination/Pagination';
-import Modal from '../../components/Modal/Modal';
-import NoteForm from '../../components/NoteForm/NoteForm';
-import css from './Notes.client.module.css';
+import { fetchNotes } from '@/lib/api';
+import NoteList from '@/components/NoteList/NoteList';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import Modal from '@/components/Modal/Modal';
+import NoteForm from '@/components/NoteForm/NoteForm';
+import css from './NotesFilter.client.module.css';
 
 const PER_PAGE = 12;
 
-export default function NotesClient() {
+interface NotesFilterClientProps {
+  initialTag: string;
+}
+
+export default function NotesFilterClient({ initialTag }: NotesFilterClientProps) {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,10 +27,12 @@ export default function NotesClient() {
     setPage(0);
   }, 500);
 
+  const tag = initialTag === 'all' ? undefined : initialTag;
+
   const { data, isLoading, isPlaceholderData, error } = useQuery({
-    queryKey: ['notes', page, search],
-    queryFn: () => fetchNotes({ page: page + 1, perPage: PER_PAGE, search }),
-   placeholderData: (previousData) => previousData, 
+    queryKey: ['notes', page, search, initialTag],
+    queryFn: () => fetchNotes({ page: page + 1, perPage: PER_PAGE, search, tag }),
+    placeholderData: (previousData) => previousData,
     refetchOnMount: false,
   });
 
@@ -46,13 +52,11 @@ export default function NotesClient() {
         <button className={css.button} onClick={() => setIsModalOpen(true)}>
           Create note +
         </button>
-       </header>
+      </header>
 
-      {}
-      {isLoading && !isPlaceholderData && <p>Loading, please wait...</p>}
+      {isLoading && !isPlaceholderData && <p>Communing with the Machine Spirit... Please wait.</p>}
       {error && <p className={css.error}>Failed to load notes. Please try again.</p>}
 
-      {}
       <div className={isPlaceholderData ? css.loadingOpacity : ''}>
         {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
       </div>
