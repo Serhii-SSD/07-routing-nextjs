@@ -14,10 +14,10 @@ import css from './NotesFilter.client.module.css';
 const PER_PAGE = 12;
 
 interface NotesFilterClientProps {
-  initialTag: string;
+  initialSlug: string;
 }
 
-export default function NotesFilterClient({ initialTag }: NotesFilterClientProps) {
+export default function NotesFilterClient({ initialSlug }: NotesFilterClientProps) {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,10 +27,10 @@ export default function NotesFilterClient({ initialTag }: NotesFilterClientProps
     setPage(0);
   }, 500);
 
-  const tag = initialTag === 'all' ? undefined : initialTag;
+  const tag = initialSlug === 'all' ? undefined : initialSlug;
 
   const { data, isLoading, isPlaceholderData, error } = useQuery({
-    queryKey: ['notes', page, search, initialTag],
+    queryKey: ['notes', page, search, initialSlug],
     queryFn: () => fetchNotes({ page: page + 1, perPage: PER_PAGE, search, tag }),
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,

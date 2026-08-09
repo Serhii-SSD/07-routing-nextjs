@@ -3,12 +3,12 @@ import { fetchNotes } from '@/lib/api';
 import NotesFilterClient from './NotesFilter.client';
 
 interface FilterPageProps {
-  params: Promise<{ tag: string[] }>;
+  params: Promise<{ slug: string[] }>;
 }
 
 export default async function FilterPage({ params }: FilterPageProps) {
-  const { tag } = await params;
-  const tagSlug = tag[0];
+  const { slug } = await params;
+  const slugValue = slug[0];
   const queryClient = new QueryClient();
 
   const fetchParams: { page: number; perPage: number; tag?: string } = {
@@ -16,18 +16,18 @@ export default async function FilterPage({ params }: FilterPageProps) {
     perPage: 12,
   };
 
-  if (tagSlug !== 'all') {
-    fetchParams.tag = tagSlug;
+  if (slugValue !== 'all') {
+    fetchParams.tag = slugValue;
   }
 
   await queryClient.prefetchQuery({
-    queryKey: ['notes', 0, '', tagSlug],
+    queryKey: ['notes', 0, '', slugValue],
     queryFn: () => fetchNotes(fetchParams),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesFilterClient initialTag={tagSlug} />
+      <NotesFilterClient initialSlug={slugValue} />
     </HydrationBoundary>
   );
 }

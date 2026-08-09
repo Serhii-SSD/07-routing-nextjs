@@ -6,7 +6,7 @@ import { fetchNoteById } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
 import css from './NotePreview.module.css';
 
-export default function NotePreview() {
+export default function NotePreviewModal() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
